@@ -3,9 +3,11 @@ const nodemailer = require('nodemailer')
 
 const transport = nodemailer.createTransport({
   service: 'gmail',
+  host: "smtp.gmail.com",
+  port: 587,
   auth: {
       user: process.env.MAIL_FROM,
-      pass: process.env.MAIL_FROM_PASSWORD
+      pass: process.env.MAIL_FROM_APP_PASSWORD
   }
 });
 
@@ -13,7 +15,7 @@ function send_mail(coin_name, old_price, new_price){
   const diff = ((new_price - old_price) / new_price * 100)
 
   const mailOptions = {
-    from: 'Crypto Notification',
+    from: process.env.MAIL_FROM_ALIAS,
     to: process.env.MAIL_TO,
     subject: `Price change of '+${coin_name}`,
     text: `Price change of ${coin_name}. Was ${old_price}, is: ${new_price}. Difference: ${diff}%. Tracking new price.`,
